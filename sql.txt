@@ -1,0 +1,104 @@
+CREATE TABLE Osoba (
+  imie VARCHAR(50) NOT NULL,
+  nazwisko VARCHAR(50) NOT NULL,
+  PESEL VARCHAR(11) NOT NULL,
+  id_farmera INT,
+  adres_farmera VARCHAR(100),
+  id_hodowcy INT,
+  adres_hodowcy VARCHAR(100),
+  PRIMARY KEY (imie, nazwisko, PESEL),
+  FOREIGN KEY (id_farmera, adres_farmera) REFERENCES Farmer(id_farmera, adres),
+  FOREIGN KEY (id_hodowcy, adres_hodowcy) REFERENCES Hodowca(id_hodowcy, adres)
+);
+
+CREATE TABLE Farmer (
+  adres VARCHAR(100) NOT NULL,
+  id_farmera INT NOT NULL AUTO_INCREMENT,
+  certyfikacja VARCHAR(50),
+  rozmiar_pola FLOAT,
+  gatunek_uprawy VARCHAR(50),
+  PRIMARY KEY (adres, id_farmera)
+);
+
+CREATE TABLE Hodowca (
+  adres VARCHAR(100) NOT NULL,
+  id_hodowcy INT NOT NULL AUTO_INCREMENT,
+  liczba_zwierząt INT,
+  rodzaj_zwierząt VARCHAR(50),
+  rozmiar_zagrody FLOAT,
+  PRIMARY KEY (adres, id_hodowcy)
+);
+
+
+CREATE TABLE Sprzedaż (
+  id_farmera INT,
+  adres_farmera VARCHAR(100),
+  id_hodowcy INT,
+  adres_hodowcy VARCHAR(100),
+  zarobek FLOAT,
+  FOREIGN KEY (id_farmera, adres_farmera) REFERENCES Farmer(id_farmera, adres),
+  FOREIGN KEY (id_hodowcy, adres_hodowcy) REFERENCES Hodowca(id_hodowcy, adres),
+  PRIMARY KEY (id_farmera, adres_farmera, id_hodowcy, adres_hodowcy)
+);
+
+
+CREATE TABLE Dostawca_Farmer (
+  kontakt VARCHAR(50),
+  nazwa VARCHAR(100) UNIQUE,
+  id_farmera INT,
+  adres_farmera VARCHAR(100),
+  zarobek FLOAT,
+  FOREIGN KEY (id_farmera, adres_farmera) REFERENCES Farmer(id_farmera, adres),
+  PRIMARY KEY (kontakt, nazwa)
+);
+
+CREATE TABLE Fermy_hodowlane_Hodowca (
+  adres VARCHAR(100),
+  nazwa VARCHAR(100) UNIQUE,
+  id_hodowcy INT,
+  adres_hodowcy VARCHAR(100),
+  zarobek FLOAT,
+  FOREIGN KEY (id_hodowcy, adres_hodowcy) REFERENCES Hodowca(id_hodowcy, adres),
+  PRIMARY KEY(adres, nazwa)
+);
+
+
+CREATE TABLE Sklep_spożywczy_Farmer (
+  adres VARCHAR(100),
+  nazwa VARCHAR(100) UNIQUE,
+  id_farmera INT, 
+  adres_farmera VARCHAR(100),
+  asortyment VARCHAR(100),
+  zarobek FLOAT,
+  FOREIGN KEY (id_farmera, adres_farmera) REFERENCES Farmer(id_farmera, adres),
+  PRIMARY KEY (adres, nazwa)
+);
+
+CREATE TABLE Zakład_Hodowca (
+  adres VARCHAR(100),
+  nazwa VARCHAR(100),
+  id_hodowcy INT,
+  adres_hodowcy VARCHAR(100),
+  personel INT,
+  standardy_jakości VARCHAR(100),
+  zarobek FLOAT,
+  FOREIGN KEY (id_hodowcy, adres_hodowcy) REFERENCES Hodowca(id_hodowcy, adres),
+  PRIMARY KEY (adres, nazwa)
+);
+
+CREATE TABLE Masarnia (
+  adres VARCHAR(100),
+  nazwa VARCHAR(100),
+  specjalizacja VARCHAR(100),
+  proces_przetwarzania VARCHAR(100),
+  PRIMARY KEY (adres, nazwa)
+);
+
+
+CREATE TABLE Mleczarnia (
+  adres VARCHAR(100),
+  nazwa VARCHAR(100),
+  rodzaj_produktów VARCHAR(100),
+  proces_pasteryzacji VARCHAR(100),
+  PRIMARY KEY (adres, nazwa)
+);
